@@ -1,0 +1,22 @@
+{
+  "name": "@fehmicorp/e2e-crypto",
+  "version": "1.0.0",
+  "description": "End-to-End encryption SDK for secure API payloads",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "keywords": [
+    "encryption",
+    "e2e",
+    "api security",
+    "rsa",
+    "aes"
+  ],
+  "author": "Fehmi Corporation",
+  "license": "MIT",
+  "dependencies": {
+    "node-forge": "^1.3.3"
+  }
+}
