@@ -1,6 +1,6 @@
 {
   "name": "@fehmicorp/e2e-crypto",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "End-to-End encryption SDK for secure API payloads",
   "main": "index.js",
   "scripts": {

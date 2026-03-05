@@ -1,7 +1,8 @@
 import {
   generateAESKey,
   encryptAES,
-  encryptRSA
+  encryptRSA,
+  decryptAES
 } from "./crypto.js"
 
 export function encryptPayload(payload, serverPublicKey) {
@@ -17,6 +18,18 @@ export function encryptPayload(payload, serverPublicKey) {
 
   return {
     key: encryptedKey,
-    payload: encryptedPayload
+    payload: encryptedPayload,
+    aesKey
   }
+}
+
+export function parseResponse(response, aesKey) {
+  if (!response.success) {
+    return response
+  }
+  const decrypted = decryptAES(
+    response.data,
+    aesKey
+  )
+  return decrypted
 }

@@ -8,7 +8,9 @@ export function decryptRequest(body, privateKey) {
 
   const aesKey = decryptRSA(body.key, privateKey)
 
-  return decryptAES(body.payload, aesKey)
+  const data = decryptAES(body.payload, aesKey)
+  
+  return { data, aesKey }
 }
 
 export function encryptResponse(data, aesKey) {
