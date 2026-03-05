@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "type": "module",
+  "author": "Fehmi Corporation",
   "keywords": [
     "encryption",
     "e2e",
@@ -14,7 +15,6 @@
     "rsa",
     "aes"
   ],
-  "author": "Fehmi Corporation",
   "license": "MIT",
   "dependencies": {
     "node-forge": "^1.3.3"
