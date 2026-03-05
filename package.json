@@ -18,5 +18,6 @@
   "license": "MIT",
   "dependencies": {
     "node-forge": "^1.3.3"
-  }
+  },
+  "files": ["index.js", "src", "README.md"]
 }
