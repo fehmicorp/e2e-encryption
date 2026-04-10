@@ -128,6 +128,50 @@ export async function POST(req: Request) {
 
 ---
 
+# 🌐 Multi Next.js Project Support
+
+You can now use the SDK as a universal layer across multiple Next.js apps by customizing payload field names and adding a project identifier.
+
+## Client (project-aware payload)
+
+```javascript
+import { createClientCrypto } from "@fehmicorp/e2e-crypto"
+
+const cryptoClient = createClientCrypto({
+  keyField: "encryptedKey",
+  payloadField: "encryptedPayload",
+  projectField: "projectId",
+  responseSuccessField: "ok",
+  responseDataField: "encryptedData"
+})
+
+const encrypted = cryptoClient.encryptPayload(payload, publicKey, {
+  projectId: "dashboard-app"
+})
+```
+
+## Server (project validation)
+
+```javascript
+import { createServerCrypto, encryptResponse } from "@fehmicorp/e2e-crypto"
+
+const cryptoServer = createServerCrypto({
+  keyField: "encryptedKey",
+  payloadField: "encryptedPayload",
+  projectField: "projectId"
+})
+
+const { data, aesKey } = cryptoServer.decryptRequest(body, privateKey, {
+  expectedProjectId: "dashboard-app"
+})
+
+const encrypted = encryptResponse(result, aesKey)
+```
+
+This allows one shared encryption package to be reused safely across multiple Next.js projects with different request/response contracts.
+
+---
+
 # 🔁 Encrypting Server Responses
 
 You can optionally encrypt server responses before returning them to the client.

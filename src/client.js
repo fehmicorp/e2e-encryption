@@ -5,7 +5,41 @@ import {
   decryptAES
 } from "./crypto.js"
 
-export function encryptPayload(payload, serverPublicKey) {
+const DEFAULT_CLIENT_CONFIG = {
+  keyField: "key",
+  payloadField: "payload",
+  projectField: "project",
+  responseSuccessField: "success",
+  responseDataField: "data"
+}
+
+export function createClientCrypto(config = {}) {
+  const resolvedConfig = {
+    ...DEFAULT_CLIENT_CONFIG,
+    ...config
+  }
+
+  return {
+    encryptPayload: (payload, serverPublicKey, options = {}) =>
+      encryptPayload(payload, serverPublicKey, {
+        ...resolvedConfig,
+        ...options
+      }),
+    parseResponse: (response, aesKey, options = {}) =>
+      parseResponse(response, aesKey, {
+        ...resolvedConfig,
+        ...options
+      })
+  }
+}
+
+export function encryptPayload(payload, serverPublicKey, options = {}) {
+  const {
+    keyField = DEFAULT_CLIENT_CONFIG.keyField,
+    payloadField = DEFAULT_CLIENT_CONFIG.payloadField,
+    projectField = DEFAULT_CLIENT_CONFIG.projectField,
+    projectId
+  } = options
 
   const aesKey = generateAESKey()
 
@@ -16,19 +50,32 @@ export function encryptPayload(payload, serverPublicKey) {
     serverPublicKey
   )
 
+  const encryptedRequest = {
+    [keyField]: encryptedKey,
+    [payloadField]: encryptedPayload
+  }
+
+  if (projectId) {
+    encryptedRequest[projectField] = projectId
+  }
+
   return {
-    key: encryptedKey,
-    payload: encryptedPayload,
+    ...encryptedRequest,
     aesKey
   }
 }
 
-export function parseResponse(response, aesKey) {
-  if (!response.success) {
+export function parseResponse(response, aesKey, options = {}) {
+  const {
+    responseSuccessField = DEFAULT_CLIENT_CONFIG.responseSuccessField,
+    responseDataField = DEFAULT_CLIENT_CONFIG.responseDataField
+  } = options
+
+  if (!response?.[responseSuccessField]) {
     return response
   }
   const decrypted = decryptAES(
-    response.data,
+    response[responseDataField],
     aesKey
   )
   return decrypted
