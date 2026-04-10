@@ -30,6 +30,37 @@ npm install @fehmicorp/e2e-crypto
 
 ---
 
+# 📣 Release `v1.1.0` (Formal)
+
+This release standardizes packaging and release execution so teams can publish consistently and onboard faster.
+
+## What is included
+
+* Verified Node.js test workflow (`npm test`)
+* Package verification workflow (`npm run pack:check`)
+* Formal publish command (`npm run release:publish`)
+* Dedicated release guide (`RELEASE.md`)
+
+## How to apply this release in your project
+
+1. Upgrade to the latest package:
+
+```bash
+npm install @fehmicorp/e2e-crypto@latest
+```
+
+2. Keep your existing encryption integration, or adopt project-aware fields using `createClientCrypto` and `createServerCrypto`.
+
+3. Validate your integration by encrypting on the client and decrypting on the server before deploying.
+
+4. Optionally lock package version in production for controlled rollouts:
+
+```bash
+npm install @fehmicorp/e2e-crypto@1.1.0
+```
+
+---
+
 # 🔑 Encryption Architecture
 
 The library uses a **hybrid encryption system**:
@@ -307,19 +338,28 @@ Run tests or development environment as needed.
 
 ---
 
-# 📦 Publish to npm
+# 📦 Publish to npm (Formal Release Flow)
 
-Login:
+1. Authenticate once:
 
 ```bash
 npm login
 ```
 
-Publish:
+2. Run validation checks:
 
 ```bash
-npm publish --access public
+npm test
+npm run pack:check
 ```
+
+3. Publish the release:
+
+```bash
+npm run release:publish
+```
+
+4. Create a Git tag and release note in your Git hosting platform referencing `RELEASE.md`.
 
 ---
 
